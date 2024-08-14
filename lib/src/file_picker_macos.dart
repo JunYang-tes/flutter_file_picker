@@ -19,6 +19,7 @@ class FilePickerMacOS extends FilePicker {
     int compressionQuality = 30,
     bool allowMultiple = false,
     bool withData = false,
+    bool noCopy = false,
     bool withReadStream = false,
     bool lockParentWindow = false,
     bool readSequential = false,

@@ -26,6 +26,7 @@ class FilePickerWindows extends FilePicker {
     bool allowCompression = true,
     bool allowMultiple = false,
     bool withData = false,
+    bool noCopy = false,
     bool withReadStream = false,
     bool lockParentWindow = false,
     bool readSequential = false,

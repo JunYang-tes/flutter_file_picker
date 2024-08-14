@@ -290,7 +290,15 @@ public class FileUtils {
         }
     }
 
-    public static FileInfo openFileStream(final Context context, final Uri uri, boolean withData) {
+    public static FileInfo openFileStream(final Context context, final Uri uri, boolean withData,boolean noCopy) {
+        if(noCopy) {
+            final FileInfo.Builder fileInfo = new FileInfo.Builder();
+            final String fileName = FileUtils.getFileName(uri, context);
+            fileInfo
+                    .withName(fileName)
+                    .withUri(uri);
+            return fileInfo.build();
+        }
 
         Log.i(TAG, "Caching from URI: " + uri.toString());
         FileOutputStream fos = null;

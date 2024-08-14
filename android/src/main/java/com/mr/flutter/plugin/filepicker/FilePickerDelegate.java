@@ -41,6 +41,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     private MethodChannel.Result pendingResult;
     private boolean isMultipleSelection = false;
     private boolean loadDataToMemory = false;
+    private boolean notCopy2Cache = false;
     private String type;
     private int compressionQuality=20;
     private String[] allowedExtensions;
@@ -136,7 +137,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
                                 if (Objects.equals(type, "image/*") && compressionQuality > 0) {
                                     currentUri = FileUtils.compressImage(currentUri, compressionQuality, activity.getApplicationContext());
                                 }
-                                final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, currentUri, loadDataToMemory);
+                                final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, currentUri, loadDataToMemory,notCopy2Cache);
                                 if(file != null) {
                                     files.add(file);
                                     Log.d(FilePickerDelegate.TAG, "[MultiFilePick] File #" + currentItem + " - URI: " + currentUri.getPath());
@@ -166,7 +167,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
                                 return;
                             }
 
-                            final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, uri, loadDataToMemory);
+                            final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, uri, loadDataToMemory,notCopy2Cache);
 
                             if(file != null) {
                                 files.add(file);
@@ -189,7 +190,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
                                     for (Parcelable fileUri : fileUris) {
                                         if (fileUri instanceof Uri) {
                                             Uri currentUri = (Uri) fileUri;
-                                            final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, currentUri, loadDataToMemory);
+                                            final FileInfo file = FileUtils.openFileStream(FilePickerDelegate.this.activity, currentUri, loadDataToMemory,notCopy2Cache);
 
                                             if (file != null) {
                                                 files.add(file);
@@ -305,13 +306,20 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     }
 
     @SuppressWarnings("deprecation")
-    public void startFileExplorer(final String type, final boolean isMultipleSelection, final boolean withData, final String[] allowedExtensions, final int compressionQuality, final MethodChannel.Result result) {
+    public void startFileExplorer(final String type,
+                                  final boolean isMultipleSelection,
+                                  final boolean withData,
+                                  final boolean notCopy2Cache,
+                                  final String[] allowedExtensions,
+                                  final int compressionQuality,
+                                  final MethodChannel.Result result) {
 
         if (!this.setPendingMethodCallAndResult(result)) {
             finishWithAlreadyActiveError(result);
             return;
         }
         this.type = type;
+        this.notCopy2Cache = notCopy2Cache;
         this.isMultipleSelection = isMultipleSelection;
         this.loadDataToMemory = withData;
         this.allowedExtensions = allowedExtensions;

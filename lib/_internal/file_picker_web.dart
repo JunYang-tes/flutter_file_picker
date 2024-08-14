@@ -44,6 +44,7 @@ class FilePickerWeb extends FilePicker {
     Function(FilePickerStatus)? onFileLoading,
     bool allowCompression = true,
     bool withData = true,
+    bool noCopy = true,
     bool withReadStream = false,
     bool lockParentWindow = false,
     bool readSequential = false,
