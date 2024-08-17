@@ -287,6 +287,11 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
             intent.setType(this.type);
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, this.isMultipleSelection);
             intent.putExtra("multi-pick", this.isMultipleSelection);
+            if(notCopy2Cache) {
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
 
             if (type.contains(",")) {
                 allowedExtensions = type.split(",");
